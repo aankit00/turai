@@ -1,8 +1,18 @@
 import type { Metadata } from "next";
 import { Inter, IBM_Plex_Mono } from "next/font/google";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs';
+
+import { dark } from "@clerk/themes";
+
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Weight } from "lucide-react" ;
 
 const inter = Inter({
   variable: "--font-Inter",
@@ -26,21 +36,40 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.variable} ${plexMONO.variable} antialiased`}
-      >
+    <ClerkProvider appearance={{
+      theme: dark,
+    }
+      
+    }>
 
-        <ThemeProvider  attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange>
+      
 
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${inter.variable} ${plexMONO.variable} antialiased`}
+        >
+
+          <ThemeProvider  attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange>
+              
+             <header>
+              <SignedOut>
+                <SignInButton />
+                
+                <button className="bg-rose-500 text-white p-2 rounded">Sign Up</button>
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+             </header>
+              {children}
+          </ThemeProvider>
          
-             {children}
-        </ThemeProvider>
-       
-      </body>
-    </html>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
+
