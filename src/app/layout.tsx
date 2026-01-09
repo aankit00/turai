@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, IBM_Plex_Mono } from "next/font/google";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs';
+
+import { Providers } from "@/components/providers";
 
 import { dark } from "@clerk/themes";
+
+
 
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -36,40 +32,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider appearance={{
-      theme: dark,
-    }
-      
-    }>
-
-      
-
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={`${inter.variable} ${plexMONO.variable} antialiased`}
-        >
-
-          <ThemeProvider  attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange>
-              
-             <header>
-              <SignedOut>
-                <SignInButton />
-                
-                <button className="bg-rose-500 text-white p-2 rounded">Sign Up</button>
-              </SignedOut>
-              <SignedIn>
-                <UserButton />
-              </SignedIn>
-             </header>
-              {children}
-          </ThemeProvider>
-         
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${inter.variable} ${plexMONO.variable} antialiased`}
+      >
+        <Providers>
+          {children}
+        </Providers>
+      </body>
+    </html>
   );
 }
 
