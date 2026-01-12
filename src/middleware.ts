@@ -1,13 +1,14 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-const isPublicRoute = createRouteMatcher([  'isPublicRoute' ]); // Add public routes here if needed
+const isPublicRoute = createRouteMatcher([
+  '/api/inngest(.*)', // Inngest webhook endpoint must be public
+]);
 
 export default clerkMiddleware(async (auth, req) => {
   if (!isPublicRoute(req)) {
     await auth.protect();
   }
-})
-
+});
 
 export const config = {
   matcher: [
@@ -16,6 +17,5 @@ export const config = {
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
-}; 
-
+};
 

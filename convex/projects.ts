@@ -30,6 +30,8 @@ export const get = query({
             return [];  
         }
         
-        return await ctx.db.query("projects").collect();
-    }
+        return await ctx.db.query("projects").withIndex("byOwner", (q) =>
+            q.eq("ownerId", identify.subject)
+        ).collect();
+    },
 });
