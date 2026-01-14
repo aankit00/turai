@@ -1,0 +1,21 @@
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: turai@0.1.0
+npm error Found: ai@6.0.31
+npm error node_modules/ai
+npm error   ai@"^6.0.31" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer ai@"^5.0.0" from @openrouter/ai-sdk-provider@1.5.4
+npm error node_modules/@openrouter/ai-sdk-provider
+npm error   @openrouter/ai-sdk-provider@"^1.5.4" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error C:\Users\yadav\AppData\Local\npm-cache\_logs\2026-01-13T13_10_36_126Z-eresolve-report.txt
+npm error A complete log of this run can be found in: C:\Users\yadav\AppData\Local\npm-cache\_logs\2026-01-13T13_10_36_126Z-debug-0.log

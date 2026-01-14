@@ -17,18 +17,20 @@ export const demoGenerate = inngest.createFunction(
     const { prompt } = event.data as { prompt: string };
 
     const urls = await step.run("extract-urls", async () => {
-      return prompt.match(URL_REGEX) ?? [];
+      return (prompt.match(URL_REGEX) ?? []) as string[];
     });
 
     const context = await step.run("scrape-urls", async () => {
       if (urls.length === 0) return "";
 
-      const stringUrls = urls.filter((url): url is string => typeof url === "string");
-
       const results = await Promise.all(
-        stringUrls.map(async (url) => {
-          const result = await firecrawl.scrape(url, { formats: ["markdown"] });
-          return result.markdown ?? "";
+        urls.map(async (url) => {
+          try {
+            const result = await firecrawl.scrape(url, { formats: ["markdown"] });
+            return result.markdown ?? "";
+          } catch (e) {
+            return null;
+          }
         }),
       );
 
@@ -43,6 +45,11 @@ export const demoGenerate = inngest.createFunction(
       const { text } = await generateText({
         model: openrouter("allenai/molmo-2-8b:free"),
         prompt: finalPrompt,
+        experimental_telemetry: {
+      isEnabled: true,
+      recordInputs: true,
+      recordOutputs: true,
+    },
       });
 
       return text;
@@ -50,4 +57,14 @@ export const demoGenerate = inngest.createFunction(
 
     return { message: "Generation complete", result };
   },
+);
+
+export const demoError = inngest.createFunction(
+  { id: "demo-error" },
+  { event: "demo/error" },
+  async ({ step }) => {
+    await step.run("fail", async () => {
+      throw new Error("Inngest error: Background job failed!");
+    });
+  }
 );
